@@ -1,5 +1,26 @@
 "use strict";
 const projects = [
+ {
+   id: "cardiopredict",
+   title: "CardioPredict AI",
+   subtitle: "Heart Disease Prediction System",
+   date: "2026",
+   type: "Individual project",
+   role: "Machine learning, model evaluation & explainable AI",
+   categories: ["ai"],
+   summary: "I built a Streamlit dashboard to explore heart disease predictions. It compares classification models and uses SHAP to show how individual features contribute to a prediction.",
+   details: [
+     "Built an end-to-end pipeline for data preprocessing, feature engineering and feature selection.",
+     "Compared Logistic Regression, Random Forest and SVM using stratified 5-fold cross-validation. Logistic Regression achieved 88.52% accuracy and 92.86% recall on the test set.",
+     "Integrated SHAP to visualize global feature importance and explain individual predictions.",
+     "Built an interactive prediction and model analytics dashboard and deployed it on Streamlit Community Cloud."
+   ],
+   tags: ["Python", "Scikit-learn", "SHAP", "Streamlit", "Pandas", "NumPy", "Matplotlib", "Seaborn"],
+   cover: "assets/projects/CardioPredict AI Dashboard.png",
+   liveUrl: "https://cardiopredict-ai-777.streamlit.app/",
+   url: "https://github.com/madhusanka77/CardioPredict-AI",
+   button: "View GitHub repository"
+ },
  {id:"eliteauto",title:"EliteAuto",subtitle:"AI-powered dealership management",date:"2026",type:"Individual project",role:"AI, machine learning & full-stack development",categories:["ai","fullstack"],summary:"I built a dealership app that estimates used-car prices from vehicle features. A Python service runs the Random Forest model and sends its estimate to the web app.",details:["Developed and integrated a Random Forest regression model with Python, Pandas and Scikit-learn to estimate vehicle market prices from vehicle attributes.","Built a dedicated Flask AI microservice for model inference and Gemini-powered negotiation, intent analysis and lead scoring.","Extracted structured vehicle information from unstructured advertisements; implemented inventory valuation analytics and PDF brochure generation."],tags:["Python","Scikit-learn","Pandas","Flask","Gemini 2.5 Flash","Java","Spring Boot","React","MySQL","ReportLab"],url:"https://github.com/madhusanka77/EliteAuto-AI-System",button:"View source"},
  {id:"medisafe",title:"MediSafe AI",subtitle:"AI pharmacy & clinical assistant",date:"Nov 2026",type:"Individual project",role:"Generative AI & document processing",categories:["ai","fullstack"],summary:"I built a chatbot that answers questions in Sinhala and English. It supports voice input and lets users ask questions about an uploaded PDF.",details:["Integrated the Google Gemini large language model with a React and Spring Boot application.","Implemented English and Sinhala natural language conversations, voice-based input, and AI-assisted PDF report analysis.","Created exportable conversation records for structured information management."],tags:["Java","Spring Boot","React","Gemini API","REST APIs","NLP","Generative AI"],url:"https://github.com/madhusanka77/medisafe-ai-chatbot",button:"View source"},
  {id:"ridelink",title:"RideLink",subtitle:"Microservices ride-sharing system",date:"2026",type:"Group project · 4 members",role:"My contribution: Account Service",categories:["fullstack"],summary:"I built the account service for our ride-sharing project. It handles registration, sign-in and role-based access for the other services.",details:["Developed the Account Service microservice for registration, authentication and user account management.","Implemented JWT-based authentication, role-based access control, REST APIs and MongoDB persistence.","Worked with independent service boundaries and inter-service integration, using feature branches and pull requests."],tags:["Java 21","Spring Boot","Spring Security","MongoDB","JWT","REST APIs","Swagger/OpenAPI","Git"],url:"https://github.com/SachithUdaKara65/AD-RIde-Link/tree/main/account-service",button:"View my module"},
@@ -15,7 +36,20 @@ const dialog=document.getElementById("project-dialog");
 const dialogContent=document.getElementById("dialog-content");
 const linkIcon='<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a4 4 0 0 0 6 .5l3.5-3.5a4 4 0 0 0-5.7-5.7L12 6M14 11a4 4 0 0 0-6-.5L4.5 14a4 4 0 0 0 5.7 5.7L12 18"/></svg>';
 function tags(arr){return arr.map(v=>'<span>'+esc(v)+'</span>').join("")}
-function externalLink(p){return '<a class="button ghost" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+linkIcon+esc(p.button)+'</a>'}
+const liveIcon = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 3h7v7m0-7L10 14"/><path d="M11 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6"/></svg>';
+function projectLink(project, url, label, icon, withText) {
+  const classes = withText ? ' class="button ghost"' : "";
+  return `<a${classes} href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="${esc(label)}" aria-label="${esc(project.title)} — ${esc(label)}">${icon}${withText ? esc(label) : ""}</a>`;
+}
+function projectLinks(project, withText = false) {
+  const links = [];
+  if (project.liveUrl) {
+    links.push(projectLink(project, project.liveUrl, "Open live app", liveIcon, withText));
+  }
+  const icon = project.url.startsWith("https://github.com/") ? githubIcon : linkIcon;
+  links.push(projectLink(project, project.url, project.button, icon, withText));
+  return links.join("");
+}
 const infoIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 10.5v6m0-9v1"/></svg>';
 const githubIcon = document.querySelector('.socials a[aria-label="GitHub profile"] svg').outerHTML;
 const featuredCount = 6;
@@ -23,14 +57,14 @@ function renderProjects() {
   grid.innerHTML = projects.map((p, index) => {
     const title = esc(p.title);
     const id = esc(p.id);
-    const icon = p.url.startsWith("https://github.com/") ? githubIcon : linkIcon;
+    const detailsButton = p.liveUrl ? "" : `<button type="button" data-project="${id}" aria-label="Project details for ${title}" title="Project details">${infoIcon}</button>`;
     return `
       <article class="project-card" id="project-${id}" data-categories="${p.categories.join(" ")}" ${index >= featuredCount ? "hidden" : ""}>
         <div class="project-cover">
-          <img src="assets/projects/${id}.webp" width="800" height="450" alt="" loading="lazy">
+          <img src="${esc(p.cover || `assets/projects/${p.id}.webp`)}" width="800" height="450" alt="" loading="lazy">
           <div class="cover-actions">
-            <button type="button" data-project="${id}" aria-label="Project details for ${title}" title="Project details">${infoIcon}</button>
-            <a href="${esc(p.url)}" target="_blank" rel="noopener" aria-label="${title} — ${esc(p.button)}" title="${esc(p.button)}">${icon}</a>
+            ${detailsButton}
+            ${projectLinks(p)}
           </div>
         </div>
         <div class="project-body">
@@ -49,7 +83,7 @@ grid.addEventListener("click",e=>{
  const p=projects.find(item=>item.id===b.dataset.project);
  if(!p)return;
  lastFocused=b;
- dialogContent.innerHTML='<span class="type-badge">'+esc(p.type)+' · '+esc(p.date)+'</span><h2 class="dialog-content-heading" id="dialog-title">'+esc(p.title)+' — '+esc(p.subtitle)+'</h2><p class="project-role">'+esc(p.role)+'</p><p class="dialog-summary">'+esc(p.summary)+'</p><h4>Technical highlights</h4><ul>'+p.details.map(d=>'<li>'+esc(d)+'</li>').join("")+'</ul><h4>Technology stack</h4><div class="tags">'+tags(p.tags)+'</div><div class="project-links">'+externalLink(p)+'</div>';
+ dialogContent.innerHTML='<span class="type-badge">'+esc(p.type)+' · '+esc(p.date)+'</span><h2 class="dialog-content-heading" id="dialog-title">'+esc(p.title)+' — '+esc(p.subtitle)+'</h2><p class="project-role">'+esc(p.role)+'</p><p class="dialog-summary">'+esc(p.summary)+'</p><h4>Technical highlights</h4><ul>'+p.details.map(d=>'<li>'+esc(d)+'</li>').join("")+'</ul><h4>Technology stack</h4><div class="tags">'+tags(p.tags)+'</div><div class="project-links">'+projectLinks(p, true)+'</div>';
  dialog.setAttribute("aria-labelledby","dialog-title");
  dialog.showModal();
  document.body.style.overflow="hidden";
@@ -59,6 +93,8 @@ dialog.addEventListener("click",e=>{if(e.target===dialog)dialog.close()});
 dialog.addEventListener("close",()=>{document.body.style.overflow="";if(lastFocused)lastFocused.focus()});
 const filterRow = document.querySelector(".filter-row");
 const filters = Array.from(filterRow.querySelectorAll(".filter"));
+const allProjectsCount = filterRow.querySelector('[data-filter="all"] span');
+if (allProjectsCount) allProjectsCount.textContent = String(projects.length);
 const collectionToggle = document.getElementById("project-collection-toggle");
 let showAll = false;
 function updateProjectView(category = "all") {
