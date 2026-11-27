@@ -1,6 +1,38 @@
 "use strict";
 const projects = [
  {
+   "id": "energywise",
+   "title": "EnergyWise AI",
+   "subtitle": "Intelligent Building Energy Analytics & Optimization System",
+   "date": "2026",
+   "type": "Individual project",
+   "role": "Energy analytics, regression modeling and dashboard development",
+   "categories": [
+     "ai"
+   ],
+   "summary": "I built an R Shiny dashboard to predict how much heating and cooling a building needs. Users can change design inputs, compare the predictions and rank building designs.",
+   "details": [
+     "Built a machine learning pipeline using 768 simulated building configurations to predict heating and cooling loads.",
+     "Explored relationships between design features and energy loads using hypothesis tests, ANOVA, correlation analysis and principal component analysis (PCA).",
+     "Trained and evaluated 12 models across six regression algorithms using grouped cross-validation and hyperparameter tuning.",
+     "Deployed a dashboard on Posit Connect Cloud with 21 visualizations, model explanations, what-if simulations, bulk predictions and weighted design rankings."
+   ],
+   "tags": [
+     "R",
+     "Shiny",
+     "ggplot2",
+     "Plotly",
+     "Random Forest",
+     "XGBoost",
+     "dplyr",
+     "glmnet",
+     "PCA"
+   ],
+   "liveUrl": "https://01a21c4e-cd7a-35ee-4f51-074caae3c925.share.connect.posit.cloud/",
+   "url": "https://github.com/madhusanka77/EnergyWise-AI",
+   "button": "View GitHub repository"
+ },
+ {
    id: "cardiopredict",
    title: "CardioPredict AI",
    subtitle: "Heart Disease Prediction System",
