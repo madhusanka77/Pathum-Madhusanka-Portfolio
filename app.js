@@ -1,6 +1,42 @@
 "use strict";
 const projects = [
  {
+   "id": "agrovision",
+   "title": "AgroVision AI",
+   "subtitle": "Intelligent Plant Disease Detection & Explainable AI",
+   "date": "Nov 2026",
+   "type": "Individual project",
+   "role": "Deep learning, computer vision, explainable AI & dashboard development",
+   "categories": [
+     "ai"
+   ],
+   "summary": "I built a deep learning dashboard that classifies plant leaf diseases, explains predictions with Grad-CAM, and provides crop management guidance and downloadable PDF reports.",
+   "details": [
+     "Prepared a 4,652-image PlantVillage subset covering 10 healthy and disease classes across tomato, potato and bell pepper, with data augmentation, class weighting and leaf-group leakage checks.",
+     "Trained and fine-tuned MobileNetV2 and EfficientNetB0 using transfer learning. Selected EfficientNetB0 based on validation loss; it achieved 91.80% accuracy and 91.89% macro F1-score on 707 held-out test images.",
+     "Implemented Grad-CAM heatmaps, class probability analysis, model comparison charts and confusion matrices to help interpret predictions.",
+     "Built and deployed a Streamlit application with a disease library, treatment and prevention guidance, and downloadable PDF analysis reports. Real-world field-image performance requires further validation."
+   ],
+   "tags": [
+     "Python",
+     "TensorFlow",
+     "Keras",
+     "Computer Vision",
+     "Deep Learning",
+     "Grad-CAM",
+     "EfficientNetB0",
+     "MobileNetV2",
+     "Transfer Learning",
+     "Streamlit",
+     "Plotly",
+     "ReportLab"
+   ],
+   "cover": "assets/projects/agrovision.webp",
+   "liveUrl": "https://agrovision-ai-7.streamlit.app/",
+   "url": "https://github.com/madhusanka77/AgroVision-AI",
+   "button": "View GitHub repository"
+ },
+ {
    "id": "energywise",
    "title": "EnergyWise AI",
    "subtitle": "Intelligent Building Energy Analytics & Optimization System",
